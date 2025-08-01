@@ -1,46 +1,56 @@
-'use client'
+"use client";
 
-import { useState, ChangeEvent, FormEvent } from "react"
-import { supabase } from "@/lib/supabase"
-import { motion } from "framer-motion"
-import { Button } from "../ui/button"
-import Image from "next/image"
-import { toast } from "sonner"
+import { useState, ChangeEvent, FormEvent } from "react";
+import { supabase } from "@/lib/supabase";
+import { motion } from "framer-motion";
+import { Button } from "../ui/button";
+import Image from "next/image";
+import { toast } from "sonner";
+import { services } from "./Service";
 
 type FormData = {
-  name: string
-  email: string
-  message: string
-}
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+};
 
 export default function ContactForm() {
   const [form, setForm] = useState<FormData>({
-    name: '',
-    email: '',
-    message: '',
-  })
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
 
-  
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     setForm((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const { error } = await supabase.from('messages').insert([form])
+    const { error } = await supabase.from("messages").insert([form]);
     if (error) {
-      toast.error("Erreur lors de l'envoi : " + error.message)
+      toast.error("Erreur lors de l'envoi : " + error.message);
     } else {
-      
-       toast.success(`Merci ${form.name} pour votre message , vous serez contacté au plus vite par notre equipe`)
-      setForm({ name: '', email: '', message: '' })
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      toast.success(
+        `Merci ${form.name} pour votre message , vous serez contacté au plus vite par notre equipe`
+      );
+      setForm({ name: "", email: "", subject: "", message: "" });
     }
-  }
+  };
 
   return (
     <section id="contact" className="py-20 px-6  ">
@@ -72,8 +82,9 @@ export default function ContactForm() {
 
         {/* Right Section: Contact Form */}
         <div className="text-left">
-          <h2 className="text-3xl font-bold mb-6 text-secondary-foreground">Contactez-moi</h2>
-
+          <h2 className="text-3xl font-bold mb-6 text-secondary-foreground">
+            Contactez-moi
+          </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
@@ -94,6 +105,21 @@ export default function ContactForm() {
               value={form.email}
               required
             />
+
+            <select
+              onChange={handleChange}
+              value={form.subject}
+              name="subject"
+              className="bg-input w-full p-4 rounded-lg"
+              required
+            >
+              <option value="">Sélectionnez un service</option>
+              {services.map((service, index) => (
+                <option className="cursor-pointer text-muted-foreground " key={index} value={service.title}>
+                  {service.title} — {service.desc}
+                </option>
+              ))}
+            </select>
             <textarea
               name="message"
               rows={5}
@@ -113,5 +139,5 @@ export default function ContactForm() {
         </div>
       </motion.div>
     </section>
-  )
+  );
 }

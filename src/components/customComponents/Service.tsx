@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { Code, Camera, Video, Megaphone, PenTool,Brush  } from "lucide-react"
 
-const services = [
+export const services = [
   { icon: <Code />, title: "Développement Web", desc: "Sites web modernes, apps, landing pages." },
   { icon: <PenTool />, title: "Création de contenu", desc: "Rédaction, posts, design visuel." },
   { icon: <Camera />, title: "Photographie", desc: "Portraits, produits, évènements." },
