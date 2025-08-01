@@ -8,6 +8,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { services } from "./Service";
 
+
 type FormData = {
   name: string;
   email: string;
@@ -131,7 +132,8 @@ export default function ContactForm() {
             />
             <Button
               type="submit"
-              className="bg-ring/50 hover:bg-ring/90 transition duration-500 text-white px-6 py-3 rounded-lg font-semibold "
+              variant={"ghost"}
+              className="  bg-ring/50  transition duration-500 text-white px-6 py-3 rounded-lg font-semibold "
             >
               Envoyer
             </Button>
