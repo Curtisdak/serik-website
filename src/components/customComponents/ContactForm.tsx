@@ -20,7 +20,7 @@ export default function ContactForm() {
     message: '',
   })
 
-  const [success, setSuccess] = useState<boolean>(false)
+  
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({
@@ -32,11 +32,11 @@ export default function ContactForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const { error, data } = await supabase.from('messages').insert([form])
+    const { error } = await supabase.from('messages').insert([form])
     if (error) {
       toast.error("Erreur lors de l'envoi : " + error.message)
     } else {
-      setSuccess(true)
+      
        toast.success(`Merci ${form.name} pour votre message , vous serez contacté au plus vite par notre equipe`)
       setForm({ name: '', email: '', message: '' })
     }

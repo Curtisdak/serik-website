@@ -9,7 +9,7 @@ const services = [
   { icon: <Camera />, title: "Photographie", desc: "Portraits, produits, évènements." },
   { icon: <Video />, title: "Vidéo", desc: "Tournage, montage, vidéos pro." },
   { icon: <Megaphone />, title: "Publicité", desc: "Stratégies marketing & publicité digitale." },
-  { icon: <Brush  />, title: "Design", desc: "Création de flyers, affiches , covers." },
+  { icon: <Brush  />, title: "Design", desc: "Création  de flyers, affiches , covers, logos " },
 ]
 
 export default function Services() {
