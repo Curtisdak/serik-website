@@ -1,14 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DynaPuff, Roboto,Jua } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+import { Toaster } from "@/components/ui/sonner";
+import NavBar from "@/components/customComponents/NavBar";
+import { ThemeProvider } from "@/components/customComponents/ThemeProvider";
+const fontTitle = DynaPuff({
+  weight: "400",
+  variable: "--font-title",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const fontBody = Roboto({
+  weight: "400",
+  variable: "--font-body",
+  subsets: ["latin"],
+});
+const fontPara = Jua({
+   weight: "400",
+  variable: "--font-para",
   subsets: ["latin"],
 });
 
@@ -25,9 +34,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${fontTitle.variable} ${fontBody.variable} ${fontPara.variable} antialiased`}
       >
-        {children}
+        
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NavBar />
+            <div className="pb-[70px] lg:pb-0">{children}</div>
+            <Toaster />
+           
+          </ThemeProvider>
+      
       </body>
     </html>
   );
