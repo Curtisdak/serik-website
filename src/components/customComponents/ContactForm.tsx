@@ -8,7 +8,6 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { services } from "./Service";
 
-
 type FormData = {
   name: string;
   email: string;
@@ -24,6 +23,8 @@ export default function ContactForm() {
     message: "",
   });
 
+  const [spinner, setSpinner] = useState<boolean>(false);
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -34,23 +35,34 @@ export default function ContactForm() {
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    setSpinner(true);
     e.preventDefault();
 
+    // Save to Supabase
     const { error } = await supabase.from("messages").insert([form]);
-    if (error) {
-      toast.error("Erreur lors de l'envoi : " + error.message);
-    } else {
-      await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
 
-      toast.success(
-        `Merci ${form.name} pour votre message , vous serez contacté au plus vite par notre equipe`
-      );
-      setForm({ name: "", email: "", subject: "", message: "" });
+    // Send email notification via Resend API
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    if (error || !res.ok) {
+      toast.error("Désolé, votre message n'a pas été envoyé.");
+      return;
     }
+    setSpinner(false);
+    toast.success(
+      `Merci ${form.name} pour votre message, je suis impatient de travailler avec vous.`
+    );
+
+    setForm({
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    });
   };
 
   return (
@@ -87,7 +99,7 @@ export default function ContactForm() {
             Contactez-moi
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" >
             <input
               type="text"
               name="name"
@@ -116,7 +128,11 @@ export default function ContactForm() {
             >
               <option value="">Sélectionnez un service</option>
               {services.map((service, index) => (
-                <option className="cursor-pointer text-muted-foreground " key={index} value={service.title}>
+                <option
+                  className="cursor-pointer text-muted-foreground "
+                  key={index}
+                  value={`${service.title} - ${service.desc}`}
+                >
                   {service.title} — {service.desc}
                 </option>
               ))}
@@ -134,8 +150,19 @@ export default function ContactForm() {
               type="submit"
               variant={"ghost"}
               className="  bg-ring/50  transition duration-500 text-white px-6 py-3 rounded-lg font-semibold "
+              disabled={spinner}
             >
-              Envoyer
+              {spinner ? (
+                <Image className="animate-spin  "
+                  src="/serikLogo.svg"
+                  alt="Serik Logo"
+                  width={32}
+                  height={32}
+                  priority
+                />
+              ) : (
+                "Envoyer"
+              )}
             </Button>
           </form>
         </div>

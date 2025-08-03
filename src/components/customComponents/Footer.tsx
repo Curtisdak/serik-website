@@ -52,14 +52,14 @@ export default function Footer() {
             GitHub
           </a>
           <a
-            href="https://www.linkedin.com"
+            href="https://www.linkedin.com/curtisdakouri"
             target="_blank"
             className="hover:text-white transition"
           >
             LinkedIn
           </a>
           <a
-            href="mailto:contact@serik.io"
+            href="mailto:curtis.dakouri@gmail.com"
             className="hover:text-white transition"
           >
             Email

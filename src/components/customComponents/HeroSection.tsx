@@ -1,17 +1,24 @@
-'use client'
+"use client";
 
-import { motion } from "framer-motion"
-
+import { motion } from "framer-motion";
+import Image from "next/image";
 export default function Hero() {
   return (
     <section className="w-full min-h-screen flex flex-col justify-center items-center text-center px-6 bg-gradient-to-b from-primary to-background text-white">
       <motion.h1
-        className="text-4xl md:text-6xl font-bold mb-4"
+        className="flex items-center flex-col gap-2 text-4xl md:text-6xl font-bold mb-4"
         initial={{ opacity: 0, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-         <span className="text-white text-8xl">SERIK</span>
+        <Image
+          src="/serikLogo.svg"
+          alt="Serik Logo"
+          width={68}
+          height={68}
+          priority
+        />
+        <span className="text-white text-4xl">SERIK</span>
       </motion.h1>
 
       <motion.p
@@ -20,7 +27,8 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4, duration: 0.8 }}
       >
-        Développeur Full Stack · Créateur de contenu · Photographe · Vidéaste · Publicitaire
+        Développeur Full Stack · Créateur de contenu · Photographe · Vidéaste ·
+        Publicitaire
       </motion.p>
 
       <motion.a
@@ -33,5 +41,5 @@ export default function Hero() {
         Découvrir mes services
       </motion.a>
     </section>
-  )
+  );
 }

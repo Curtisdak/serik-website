@@ -14,11 +14,12 @@ export const navItems = [
 
 export default function Navbar() {
   return (
-    <header className="fixed top-0 lg:top-3 left-1/2 -translate-x-1/2 z-50 w-[100%] lg:w-[50%] lg:rounded-full bg-background backdrop-blur-sm  shadow-md">
+    <header className="fixed top-0 lg:top-3 left-1/2 -translate-x-1/2 z-50 w-[100%] lg:w-[50%] lg:rounded-full bg-amber-50 dark:bg-black backdrop-blur-sm  shadow-md">
       <nav className="flex items-center justify-between px-4 py-2 max-w-6xl mx-auto">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image
+          className="hover:animate-spin"
             src="/serikLogo.svg"
             alt="Serik Logo"
             width={38}
